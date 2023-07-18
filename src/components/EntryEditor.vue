@@ -10,7 +10,7 @@ const emoji = ref<Emoji | null>(null);
 const charCount = computed(() => body.value.length);
 const maxChars = 280;
 
-defineEmits<{
+const emit = defineEmits<{
   (evt: "@create", entry: Entry): void;
 }>();
 
@@ -23,21 +23,22 @@ const handleTextInput = (evt: Event) => {
     body.value = textarea.value;
   }
 };
+
+const handleSubmit = () => {
+  emit("@create", {
+    body: body.value,
+    emoji: emoji.value,
+    createdAt: new Date(),
+    userId: 1,
+    id: Math.random(),
+  });
+  body.value = "";
+  emoji.value = null;
+};
 </script>
 
 <template>
-  <form
-    class="entry-form"
-    @submit.prevent="
-      $emit('@create', {
-        body,
-        emoji,
-        createdAt: new Date(),
-        userId: 1,
-        id: Math.random(),
-      })
-    "
-  >
+  <form class="entry-form" @submit.prevent="handleSubmit">
     <textarea
       :value="body"
       @keyup="handleTextInput"

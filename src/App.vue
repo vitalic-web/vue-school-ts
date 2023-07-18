@@ -6,6 +6,8 @@ import EntryCard from "@/components/EntryCard.vue";
 import type User from "@/types/User";
 import type Entry from "@/types/Entry";
 
+const entries: Entry[] = reactive([]);
+
 const user: User = reactive({
   id: 1,
   username: "vitaly_st",
@@ -15,7 +17,7 @@ const user: User = reactive({
 console.log(user);
 
 const handleCreateEntry = (entry: Entry) => {
-  console.log(entry);
+  entries.unshift(entry);
 };
 </script>
 
@@ -24,8 +26,8 @@ const handleCreateEntry = (entry: Entry) => {
     <TheHeader />
     <EntryEditor @@create="handleCreateEntry" />
     <ul>
-      <li>
-        <EntryCard />
+      <li v-for="entry in entries" :key="entry.id">
+        <EntryCard :entry="entry" />
       </li>
     </ul>
   </main>
