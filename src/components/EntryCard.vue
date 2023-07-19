@@ -2,8 +2,12 @@
 import DateDisplay from "./DateDisplay.vue";
 import UseEmojis from "@/composables/UseEmojis";
 import type Entry from "@/types/Entry";
+import { inject } from "vue";
+import { userInjectionKey } from "@/injectionKeys";
 
 const { findEmoji } = UseEmojis();
+
+const user = inject(userInjectionKey);
 
 defineProps<{
   entry: Entry;
@@ -19,7 +23,7 @@ defineProps<{
     <div class="entry-footer">
       <DateDisplay :date="entry.createdAt" class="mr-2" />
       |
-      <span class="ml-2">vitaly_stk</span>
+      <span class="ml-2">{{ user?.username || "anonymous" }}</span>
     </div>
   </div>
 </template>
